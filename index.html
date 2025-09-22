@@ -31,7 +31,7 @@
             cursor: none;
         }
         
-        /* Haupt-Hintergrund mit mehreren Fallbacks */
+        /* Haupt-Hintergrund */
         .background-container {
             position: fixed;
             top: 0;
@@ -39,9 +39,7 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: 
-                linear-gradient(45deg, #00170F 0%, #0a2a1a 100%),
-                url('img/background.png') center/cover no-repeat;
+            background: #00170F;
         }
         
         .background-image {
@@ -50,9 +48,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                url('img/background.png') center/cover no-repeat,
-                linear-gradient(45deg, #00170F 0%, #0a2a1a 100%);
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         
         /* Overlay für bessere Lesbarkeit */
@@ -490,13 +489,13 @@
             border-radius: 5px;
         }
         
-        /* Trailing Cursor Canvas */
-        #trailingCursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        /* Trailing Cursor */
+        .trail {
+            position: absolute;
+            height: 6px;
+            width: 6px;
+            border-radius: 50%;
+            background: #0a8c66;
             pointer-events: none;
             z-index: 9999;
         }
@@ -577,9 +576,6 @@
         <div class="background-image"></div>
         <div class="background-overlay"></div>
     </div>
-    
-    <!-- Trailing Cursor Canvas -->
-    <canvas id="trailingCursor"></canvas>
     
     <!-- Easter Egg Video Button -->
     <div class="video-button" id="videoButton" title="Easter Egg">?</div>
@@ -733,145 +729,81 @@
     </div>
 
     <script>
-        // Trailing Cursor Implementation
-        class TrailingCursor {
-            constructor(options = {}) {
-                this.particles = options.particles || 15;
-                this.rate = options.rate || 0.4;
-                this.baseImageSrc = options.baseImageSrc || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAATCAYAAACk9eypAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAhGVYSWZNTQAqAAAACAAFARIAAwAAAAEAAQAAARoABQAAAAEAAABKARsABQAAAAEAAABSASgAAwAAAAEAAgAAh2kABAAAAAEAAABaAAAAAAAAAEgAAAABAAAASAAAAAEAA6ABAAMAAAABAAEAAKACAAQAAAABAAAADKADAAQAAAABAAAAEwAAAAAChpcNAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAABqElEQVQoFY3SPUvDQBgH8BREpRHExYiDgmLFl6WC+AYmWeyLg4i7buJX8DMpOujgyxGvUYeCgzhUQUSKKLUS0+ZyptXh8Z5Ti621ekPyJHl+uftfomhaf9Ei5JyxXKfynyEA6EYcLHpwyflT958GAQ7DTABNHd8EbtDbEH2BD5QEQmi2mM8P/Iq+A0SzszEg+3sPjDnDdVEtQKQbMUidHD3xVzf6A9UDEmEm+8h9KTqTVUjT+vB53aHrCbAPiceYq1dQI1Aqv4EhMll0jzv+Y0yiRgCnLRSYyDQHVoqUXe4uKL9l+L7GXC4vkMhE6eW/AOJs9k583ORDUyXMZ8F5SVHVVnllmPNKSFagAJ5DofaqGXw/gHBYg51dIldkmknY3tguv3jOtHR4+MqAzaraJXbEhqHhcQlwGSOi5pytVQHZLN5s0WNe8HPrLYlFsO20RPHkImxsbmHdLJFI76th7Z4SeuF53hTeFLvhRCJRCTKZKxgdnRDbW+iozFJbBMw14/ElwGYc0egMBMFzT21f5Rog33Z7dX02GBm7WV5ZfT5Nn5bE3zuCDe9UxdTpNvK+5AAAAABJRU5ErkJggg==';
-                
-                this.canvas = document.getElementById('trailingCursor');
-                this.ctx = this.canvas.getContext('2d');
-                this.cursor = { x: 0, y: 0 };
-                this.particlesArray = [];
-                this.animationFrame = null;
-                this.cursorsInitted = false;
-                
-                this.init();
-            }
-            
-            init() {
-                // Canvas größe setzen
-                this.resizeCanvas();
-                window.addEventListener('resize', () => this.resizeCanvas());
-                
-                // Mausbewegung verfolgen
-                document.addEventListener('mousemove', (e) => this.onMouseMove(e));
-                
-                // Animation starten
-                this.animate();
-            }
-            
-            resizeCanvas() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-            }
-            
-            onMouseMove(e) {
-                this.cursor.x = e.clientX;
-                this.cursor.y = e.clientY;
-                
-                if (!this.cursorsInitted) {
-                    this.cursorsInitted = true;
-                    // Partikel initialisieren
-                    for (let i = 0; i < this.particles; i++) {
-                        this.particlesArray.push({
-                            x: this.cursor.x,
-                            y: this.cursor.y
-                        });
-                    }
-                }
-            }
-            
-            animate() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                let x = this.cursor.x;
-                let y = this.cursor.y;
-                
-                this.particlesArray.forEach((particle, index) => {
-                    const nextParticle = this.particlesArray[index + 1] || this.particlesArray[0];
-                    
-                    particle.x = x;
-                    particle.y = y;
-                    
-                    // Partikel zeichnen
-                    this.ctx.fillStyle = 'rgba(10, 140, 102, 0.6)';
-                    this.ctx.beginPath();
-                    this.ctx.arc(particle.x, particle.y, 3, 0, Math.PI * 2);
-                    this.ctx.fill();
-                    
-                    x += (nextParticle.x - particle.x) * this.rate;
-                    y += (nextParticle.y - particle.y) * this.rate;
-                });
-                
-                this.animationFrame = requestAnimationFrame(() => this.animate());
-            }
-            
-            destroy() {
-                if (this.animationFrame) {
-                    cancelAnimationFrame(this.animationFrame);
-                }
-            }
-        }
-
-        // JSON Counter für Easter Egg (mit localStorage als Fallback)
-        async function updateEasterEggCounter() {
-            try {
-                // Versuche, den Counter von einer JSON-Datei zu laden
-                const response = await fetch('counter.json');
-                if (response.ok) {
-                    const data = await response.json();
-                    return data.count;
-                }
-            } catch (error) {
-                console.log('JSON-Datei nicht gefunden, verwende localStorage');
-            }
-            
-            // Fallback: localStorage
-            return localStorage.getItem('easterEggDiscoverCount') || 0;
-        }
-
-        async function incrementEasterEggCounter() {
-            let currentCount = await updateEasterEggCounter();
-            currentCount = parseInt(currentCount) + 1;
-            
-            try {
-                // Versuche, in eine JSON-Datei zu schreiben (wenn Server-Support vorhanden)
-                await fetch('update-counter.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ count: currentCount })
-                });
-            } catch (error) {
-                // Fallback: localStorage
-                localStorage.setItem('easterEggDiscoverCount', currentCount);
-            }
-            
-            return currentCount;
-        }
-
-        // Tab-Navigation
+        // Einfacher Mouse Trail Effect
         document.addEventListener('DOMContentLoaded', function() {
-            // Trailing Cursor initialisieren (nur wenn keine reduzierte Bewegung)
-            let trailingCursor = null;
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                trailingCursor = new TrailingCursor({
-                    particles: 12,
-                    rate: 0.3
+            // Mouse Trail Variablen
+            const dots = [];
+            const mouse = { x: 0, y: 0 };
+            const dotCount = 12;
+
+            // Dot Klasse
+            class Dot {
+                constructor() {
+                    this.x = 0;
+                    this.y = 0;
+                    this.node = (function(){
+                        const n = document.createElement("div");
+                        n.className = "trail";
+                        document.body.appendChild(n);
+                        return n;
+                    }());
+                }
+                
+                draw() {
+                    this.node.style.left = this.x + "px";
+                    this.node.style.top = this.y + "px";
+                }
+            }
+
+            // Dots erstellen
+            for (let i = 0; i < dotCount; i++) {
+                const d = new Dot();
+                dots.push(d);
+            }
+
+            // Draw Funktion
+            function draw() {
+                let x = mouse.x;
+                let y = mouse.y;
+                
+                dots.forEach(function(dot, index, dots) {
+                    const nextDot = dots[index + 1] || dots[0];
+                    
+                    dot.x = x;
+                    dot.y = y;
+                    dot.draw();
+                    x += (nextDot.x - dot.x) * 0.6;
+                    y += (nextDot.y - dot.y) * 0.6;
                 });
             }
-            
-            // Counter initialisieren
-            const counterElement = document.getElementById('easterEggCounter');
-            const countElement = document.getElementById('discoverCount');
-            
-            updateEasterEggCounter().then(count => {
-                countElement.textContent = count;
+
+            // Mausbewegung verfolgen
+            document.addEventListener("mousemove", function(event) {
+                mouse.x = event.pageX;
+                mouse.y = event.pageY;
             });
 
+            // Animation
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+
+            // Nur starten wenn keine reduzierte Bewegung gewünscht
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                animate();
+            }
+
+            // Easter Egg Counter (direkt in HTML eingebaut)
+            let discoverCount = parseInt(localStorage.getItem('easterEggDiscoverCount')) || 0;
+            let hasDiscovered = localStorage.getItem('hasDiscoveredEasterEgg') === 'true';
+            
+            // Counter anzeigen
+            const counterElement = document.getElementById('easterEggCounter');
+            const countElement = document.getElementById('discoverCount');
+            countElement.textContent = discoverCount;
+
+            // Tab-Navigation
             const tabs = document.querySelectorAll('.nav-tab');
             const ammoSection = document.getElementById('ammo-section');
             const familySection = document.getElementById('family-section');
@@ -923,17 +855,24 @@
             const videoPlayer = document.getElementById('videoPlayer');
             const videoClose = document.getElementById('videoClose');
             
-            let hasDiscovered = localStorage.getItem('hasDiscoveredEasterEgg') || false;
+            let hideCounterTimeout = null;
             
-            videoButton.addEventListener('click', async function() {
+            videoButton.addEventListener('click', function() {
+                // Counter erhöhen wenn noch nicht entdeckt
                 if (!hasDiscovered) {
-                    const newCount = await incrementEasterEggCounter();
-                    countElement.textContent = newCount;
+                    discoverCount++;
+                    localStorage.setItem('easterEggDiscoverCount', discoverCount);
                     localStorage.setItem('hasDiscoveredEasterEgg', 'true');
                     hasDiscovered = true;
+                    countElement.textContent = discoverCount;
                     
+                    // Counter anzeigen für 5 Sekunden
                     counterElement.style.display = 'block';
-                    setTimeout(() => {
+                    
+                    if (hideCounterTimeout) {
+                        clearTimeout(hideCounterTimeout);
+                    }
+                    hideCounterTimeout = setTimeout(() => {
                         counterElement.style.display = 'none';
                     }, 5000);
                 }
@@ -941,6 +880,24 @@
                 videoPlayer.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
                 videoModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
+            });
+            
+            // Counter anzeigen beim Überfahren
+            videoButton.addEventListener('mouseenter', function() {
+                counterElement.style.display = 'block';
+                
+                if (hideCounterTimeout) {
+                    clearTimeout(hideCounterTimeout);
+                }
+            });
+            
+            videoButton.addEventListener('mouseleave', function() {
+                if (!hasDiscovered) {
+                    // Nur ausblenden wenn noch nicht entdeckt
+                    hideCounterTimeout = setTimeout(() => {
+                        counterElement.style.display = 'none';
+                    }, 5000);
+                }
             });
             
             videoClose.addEventListener('click', function() {
@@ -957,15 +914,16 @@
                 }
             });
             
-            // Counter anzeigen beim Überfahren
-            videoButton.addEventListener('mouseenter', function() {
-                counterElement.style.display = 'block';
-            });
-            
-            videoButton.addEventListener('mouseleave', function() {
-                if (!hasDiscovered) {
-                    counterElement.style.display = 'none';
-                }
+            // Sanfte Hover-Effekte für Karten
+            const cards = document.querySelectorAll('.ammo-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
             });
         });
     </script>
