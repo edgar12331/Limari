@@ -6,7 +6,6 @@
     <title>Limari Munitionspreise - FiveM Server</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
     <style>
         :root {
             --primary-dark: #00170F;
@@ -22,7 +21,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Montserrat', sans-serif;
-            cursor: none; /* Versteckt den Standard-Cursor */
         }
         
         body {
@@ -30,9 +28,10 @@
             color: #333;
             min-height: 100vh;
             overflow-x: hidden;
+            cursor: none;
         }
         
-        /* Haupt-Hintergrund mit Fallback */
+        /* Haupt-Hintergrund mit mehreren Fallbacks */
         .background-container {
             position: fixed;
             top: 0;
@@ -40,7 +39,9 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: #00170F; /* Fallback Farbe */
+            background: 
+                linear-gradient(45deg, #00170F 0%, #0a2a1a 100%),
+                url('img/background.png') center/cover no-repeat;
         }
         
         .background-image {
@@ -49,11 +50,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('img/background.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.9;
+            background: 
+                url('img/background.png') center/cover no-repeat,
+                linear-gradient(45deg, #00170F 0%, #0a2a1a 100%);
         }
         
         /* Overlay für bessere Lesbarkeit */
@@ -63,7 +62,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 23, 15, 0.6);
+            background: rgba(0, 23, 15, 0.7);
             z-index: -1;
         }
         
@@ -241,12 +240,12 @@
         
         /* Spezifische Anpassungen für bestimmte Waffen */
         .gusenberg-icon {
-            height: 90px; /* Etwas kleiner */
+            height: 90px;
             transform: scale(0.9);
         }
         
         .marksman-icon {
-            height: 95px; /* Etwas kleiner */
+            height: 95px;
             transform: scale(0.95);
         }
         
@@ -256,11 +255,11 @@
         }
         
         .ammo-card:hover .gusenberg-icon {
-            transform: scale(1.0); /* Angepasst für Gusenberg */
+            transform: scale(1.0);
         }
         
         .ammo-card:hover .marksman-icon {
-            transform: scale(1.05); /* Angepasst für Marksman */
+            transform: scale(1.05);
         }
         
         .ammo-name {
@@ -280,7 +279,7 @@
             position: relative;
             font-weight: 700;
             letter-spacing: 1px;
-            text-shadow: 0 0 8px rgba(10, 140, 102, 0.3); /* Leichter Glow */
+            text-shadow: 0 0 8px rgba(10, 140, 102, 0.3);
         }
         
         .price-tag {
@@ -291,13 +290,13 @@
             margin-top: 15px;
             border: 1px solid rgba(10, 140, 102, 0.15);
             transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(10, 140, 102, 0.2); /* Leichter Glow */
+            box-shadow: 0 0 10px rgba(10, 140, 102, 0.2);
         }
         
         .ammo-card:hover .price-tag {
             background: rgba(10, 140, 102, 0.15);
             transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(10, 140, 102, 0.3); /* Stärkerer Glow beim Hover */
+            box-shadow: 0 0 15px rgba(10, 140, 102, 0.3);
         }
         
         /* Familienfotos Bereich */
@@ -491,6 +490,17 @@
             border-radius: 5px;
         }
         
+        /* Trailing Cursor Canvas */
+        #trailingCursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
         /* Animationen */
         @keyframes fadeIn {
             from {
@@ -568,6 +578,9 @@
         <div class="background-overlay"></div>
     </div>
     
+    <!-- Trailing Cursor Canvas -->
+    <canvas id="trailingCursor"></canvas>
+    
     <!-- Easter Egg Video Button -->
     <div class="video-button" id="videoButton" title="Easter Egg">?</div>
     
@@ -617,7 +630,7 @@
                 <h2 class="title">Munitionspreise</h2>
                 
                 <div class="ammo-grid">
-                    <!-- Pistolen Munition -->
+                    <!-- Munitionskarten hier -->
                     <div class="ammo-card">
                         <img src="img/Pistol-icon.webp" alt="Pistole" class="weapon-icon">
                         <h3 class="ammo-name">Pistolen Munition</h3>
@@ -626,7 +639,6 @@
                         </div>
                     </div>
                     
-                    <!-- Revolver Munition -->
                     <div class="ammo-card">
                         <img src="img/164px-Heavy-revolver-icon.webp" alt="Revolver" class="weapon-icon" onerror="this.onerror=null; this.src='img/Heavy-revolver-icon.webp'">
                         <h3 class="ammo-name">Revolver Munition</h3>
@@ -635,7 +647,6 @@
                         </div>
                     </div>
                     
-                    <!-- SMG Munition -->
                     <div class="ammo-card">
                         <img src="img/164px-Gusenberg-sweeper-icon.webp" alt="Gusenberg Sweeper" class="weapon-icon gusenberg-icon" onerror="this.onerror=null; this.src='img/Gusenberg-sweeper-icon.webp'">
                         <h3 class="ammo-name">SMG Munition</h3>
@@ -644,7 +655,6 @@
                         </div>
                     </div>
                     
-                    <!-- Gewehr Munition -->
                     <div class="ammo-card">
                         <img src="img/Heavy-rifle-icon.webp" alt="Heavy Rifle" class="weapon-icon">
                         <h3 class="ammo-name">Gewehr Munition</h3>
@@ -653,7 +663,6 @@
                         </div>
                     </div>
                     
-                    <!-- Schrotflinten Munition -->
                     <div class="ammo-card">
                         <img src="img/164px-Sawed-off-shotgun-icon.webp" alt="Sawed-off Shotgun" class="weapon-icon" onerror="this.onerror=null; this.src='img/Sawed-off-shotgun-icon.webp'">
                         <h3 class="ammo-name">Schrotflinten Munition</h3>
@@ -662,7 +671,6 @@
                         </div>
                     </div>
                     
-                    <!-- Scharfschützen Munition -->
                     <div class="ammo-card">
                         <img src="img/Marksman-rifle-icon.webp" alt="Marksman Rifle" class="weapon-icon marksman-icon">
                         <h3 class="ammo-name">Scharfschützen Munition</h3>
@@ -678,7 +686,7 @@
                 <h2 class="title">Limari Familienfotos</h2>
                 
                 <div class="family-grid">
-                    <!-- Familienfotos von 1.png bis 12.png -->
+                    <!-- Familienfotos hier -->
                     <div class="family-photo" onclick="openLightbox('img/1.png')">
                         <img src="img/1.png" alt="Limari Familie Foto 1">
                     </div>
@@ -725,28 +733,145 @@
     </div>
 
     <script>
-        // Easter Egg Counter (lokale Speicherung)
-        let discoverCount = localStorage.getItem('easterEggDiscoverCount') || 0;
-        let hasDiscovered = localStorage.getItem('hasDiscoveredEasterEgg') || false;
-        
+        // Trailing Cursor Implementation
+        class TrailingCursor {
+            constructor(options = {}) {
+                this.particles = options.particles || 15;
+                this.rate = options.rate || 0.4;
+                this.baseImageSrc = options.baseImageSrc || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAATCAYAAACk9eypAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAhGVYSWZNTQAqAAAACAAFARIAAwAAAAEAAQAAARoABQAAAAEAAABKARsABQAAAAEAAABSASgAAwAAAAEAAgAAh2kABAAAAAEAAABaAAAAAAAAAEgAAAABAAAASAAAAAEAA6ABAAMAAAABAAEAAKACAAQAAAABAAAADKADAAQAAAABAAAAEwAAAAAChpcNAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAABqElEQVQoFY3SPUvDQBgH8BREpRHExYiDgmLFl6WC+AYmWeyLg4i7buJX8DMpOujgyxGvUYeCgzhUQUSKKLUS0+ZyptXh8Z5Ti621ekPyJHl+uftfomhaf9Ei5JyxXKfynyEA6EYcLHpwyflT958GAQ7DTABNHd8EbtDbEH2BD5QEQmi2mM8P/Iq+A0SzszEg+3sPjDnDdVEtQKQbMUidHD3xVzf6A9UDEmEm+8h9KTqTVUjT+vB53aHrCbAPiceYq1dQI1Aqv4EhMll0jzv+Y0yiRgCnLRSYyDQHVoqUXe4uKL9l+L7GXC4vkMhE6eW/AOJs9k583ORDUyXMZ8F5SVHVVnllmPNKSFagAJ5DofaqGXw/gHBYg51dIldkmknY3tguv3jOtHR4+MqAzaraJXbEhqHhcQlwGSOi5pytVQHZLN5s0WNe8HPrLYlFsO20RPHkImxsbmHdLJFI76th7Z4SeuF53hTeFLvhRCJRCTKZKxgdnRDbW+iozFJbBMw14/ElwGYc0egMBMFzT21f5Rog33Z7dX02GBm7WV5ZfT5Nn5bE3zuCDe9UxdTpNvK+5AAAAABJRU5ErkJggg==';
+                
+                this.canvas = document.getElementById('trailingCursor');
+                this.ctx = this.canvas.getContext('2d');
+                this.cursor = { x: 0, y: 0 };
+                this.particlesArray = [];
+                this.animationFrame = null;
+                this.cursorsInitted = false;
+                
+                this.init();
+            }
+            
+            init() {
+                // Canvas größe setzen
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+                
+                // Mausbewegung verfolgen
+                document.addEventListener('mousemove', (e) => this.onMouseMove(e));
+                
+                // Animation starten
+                this.animate();
+            }
+            
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+            
+            onMouseMove(e) {
+                this.cursor.x = e.clientX;
+                this.cursor.y = e.clientY;
+                
+                if (!this.cursorsInitted) {
+                    this.cursorsInitted = true;
+                    // Partikel initialisieren
+                    for (let i = 0; i < this.particles; i++) {
+                        this.particlesArray.push({
+                            x: this.cursor.x,
+                            y: this.cursor.y
+                        });
+                    }
+                }
+            }
+            
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                let x = this.cursor.x;
+                let y = this.cursor.y;
+                
+                this.particlesArray.forEach((particle, index) => {
+                    const nextParticle = this.particlesArray[index + 1] || this.particlesArray[0];
+                    
+                    particle.x = x;
+                    particle.y = y;
+                    
+                    // Partikel zeichnen
+                    this.ctx.fillStyle = 'rgba(10, 140, 102, 0.6)';
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, 3, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    x += (nextParticle.x - particle.x) * this.rate;
+                    y += (nextParticle.y - particle.y) * this.rate;
+                });
+                
+                this.animationFrame = requestAnimationFrame(() => this.animate());
+            }
+            
+            destroy() {
+                if (this.animationFrame) {
+                    cancelAnimationFrame(this.animationFrame);
+                }
+            }
+        }
+
+        // JSON Counter für Easter Egg (mit localStorage als Fallback)
+        async function updateEasterEggCounter() {
+            try {
+                // Versuche, den Counter von einer JSON-Datei zu laden
+                const response = await fetch('counter.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.count;
+                }
+            } catch (error) {
+                console.log('JSON-Datei nicht gefunden, verwende localStorage');
+            }
+            
+            // Fallback: localStorage
+            return localStorage.getItem('easterEggDiscoverCount') || 0;
+        }
+
+        async function incrementEasterEggCounter() {
+            let currentCount = await updateEasterEggCounter();
+            currentCount = parseInt(currentCount) + 1;
+            
+            try {
+                // Versuche, in eine JSON-Datei zu schreiben (wenn Server-Support vorhanden)
+                await fetch('update-counter.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ count: currentCount })
+                });
+            } catch (error) {
+                // Fallback: localStorage
+                localStorage.setItem('easterEggDiscoverCount', currentCount);
+            }
+            
+            return currentCount;
+        }
+
         // Tab-Navigation
         document.addEventListener('DOMContentLoaded', function() {
-            // Fairy Dust Cursor initialisieren
-            let fairyCursor = null;
-            
-            // Prüfen ob reduzierte Bewegung aktiv ist
+            // Trailing Cursor initialisieren (nur wenn keine reduzierte Bewegung)
+            let trailingCursor = null;
             if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                fairyCursor = new cursoreffects.fairyDustCursor({
-                    colors: ["#0a8c66", "#0dc295", "#00D68F", "#0a7355"],
-                    fairySymbol: "★"
+                trailingCursor = new TrailingCursor({
+                    particles: 12,
+                    rate: 0.3
                 });
             }
             
-            // Counter anzeigen
+            // Counter initialisieren
             const counterElement = document.getElementById('easterEggCounter');
             const countElement = document.getElementById('discoverCount');
-            countElement.textContent = discoverCount;
             
+            updateEasterEggCounter().then(count => {
+                countElement.textContent = count;
+            });
+
             const tabs = document.querySelectorAll('.nav-tab');
             const ammoSection = document.getElementById('ammo-section');
             const familySection = document.getElementById('family-section');
@@ -755,11 +880,9 @@
                 tab.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Aktiven Tab markieren
                     tabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Richtigen Bereich anzeigen
                     const tabName = this.getAttribute('data-tab');
                     if (tabName === 'ammo') {
                         ammoSection.style.display = 'block';
@@ -800,19 +923,16 @@
             const videoPlayer = document.getElementById('videoPlayer');
             const videoClose = document.getElementById('videoClose');
             
-            videoButton.addEventListener('click', function() {
-                // Counter erhöhen wenn noch nicht entdeckt
+            let hasDiscovered = localStorage.getItem('hasDiscoveredEasterEgg') || false;
+            
+            videoButton.addEventListener('click', async function() {
                 if (!hasDiscovered) {
-                    discoverCount++;
-                    localStorage.setItem('easterEggDiscoverCount', discoverCount);
+                    const newCount = await incrementEasterEggCounter();
+                    countElement.textContent = newCount;
                     localStorage.setItem('hasDiscoveredEasterEgg', 'true');
                     hasDiscovered = true;
-                    countElement.textContent = discoverCount;
                     
-                    // Counter anzeigen
                     counterElement.style.display = 'block';
-                    
-                    // Nach 5 Sekunden ausblenden
                     setTimeout(() => {
                         counterElement.style.display = 'none';
                     }, 5000);
@@ -837,7 +957,7 @@
                 }
             });
             
-            // Counter anzeigen beim Überfahren des Buttons
+            // Counter anzeigen beim Überfahren
             videoButton.addEventListener('mouseenter', function() {
                 counterElement.style.display = 'block';
             });
@@ -846,18 +966,6 @@
                 if (!hasDiscovered) {
                     counterElement.style.display = 'none';
                 }
-            });
-            
-            // Sanfte Hover-Effekte für Karten
-            const cards = document.querySelectorAll('.ammo-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-10px)';
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0)';
-                });
             });
         });
     </script>
