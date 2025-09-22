@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limari Munitionspreise - FiveM Server</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #00170F;
+            --primary-green: #0a8c66;
+            --primary-light: #0dc295;
+            --accent-white: #FFFFFF;
+            --accent-gray: #F8F8F8;
+            --card-bg: rgba(255, 255, 255, 0.93);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: url('img/background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header mit Logo und Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            height: 80px;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
+        }
+        
+        .faction-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: 2px;
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 40px;
+            gap: 10px;
+        }
+        
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--primary-dark);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .nav-tab.active {
+            background: var(--primary-green);
+            color: white;
+            box-shadow: 0 5px 15px rgba(10, 140, 102, 0.3);
+        }
+        
+        .nav-tab:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        /* Discord Button */
+        .discord-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(145deg, var(--primary-green), #0a7355);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(10, 140, 102, 0.3);
+            border: 1px solid var(--primary-green);
+        }
+        
+        .discord-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(10, 140, 102, 0.4);
+            background: linear-gradient(145deg, #0b9a70, #0a8c66);
+        }
+        
+        /* Hauptbereich */
+        .main-content {
+            position: relative;
+            margin: 40px 0;
+        }
+        
+        .title {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 2.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--primary-dark);
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--primary-green);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        /* Munitions-Grid */
+        .ammo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .ammo-card {
+            background: var(--card-bg);
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ammo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary-green);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .ammo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .ammo-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .weapon-icon {
+            height: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+            z-index: 1;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        /* Spezifische Anpassungen für bestimmte Waffen */
+        .gusenberg-icon {
+            height: 90px; /* Etwas kleiner */
+            transform: scale(0.9);
+        }
+        
+        .marksman-icon {
+            height: 95px; /* Etwas kleiner */
+            transform: scale(0.95);
+        }
+        
+        .ammo-card:hover .weapon-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(10, 140, 102, 0.2));
+        }
+        
+        .ammo-card:hover .gusenberg-icon {
+            transform: scale(1.0); /* Angepasst für Gusenberg */
+        }
+        
+        .ammo-card:hover .marksman-icon {
+            transform: scale(1.05); /* Angepasst für Marksman */
+        }
+        
+        .ammo-name {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #222;
+            z-index: 1;
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+        }
+        
+        .ammo-price {
+            font-size: 2rem;
+            color: var(--primary-green);
+            z-index: 1;
+            position: relative;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(10, 140, 102, 0.3); /* Leichter Glow */
+        }
+        
+        .price-tag {
+            background: rgba(10, 140, 102, 0.1);
+            padding: 12px 25px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 15px;
+            border: 1px solid rgba(10, 140, 102, 0.15);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(10, 140, 102, 0.2); /* Leichter Glow */
+        }
+        
+        .ammo-card:hover .price-tag {
+            background: rgba(10, 140, 102, 0.15);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(10, 140, 102, 0.3); /* Stärkerer Glow beim Hover */
+        }
+        
+        /* Familienfotos Bereich */
+        .family-section {
+            display: none;
+            margin: 40px 0;
+        }
+        
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .family-photo {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .family-photo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .family-photo img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Lightbox Styling */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            display: block;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lightbox-close:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            color: #555;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        /* Animationen */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .ammo-card {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+        
+        .ammo-card:nth-child(1) { animation-delay: 0.1s; }
+        .ammo-card:nth-child(2) { animation-delay: 0.2s; }
+        .ammo-card:nth-child(3) { animation-delay: 0.3s; }
+        .ammo-card:nth-child(4) { animation-delay: 0.4s; }
+        .ammo-card:nth-child(5) { animation-delay: 0.5s; }
+        .ammo-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        /* Partikel-Effekt */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: rgba(10, 140, 102, 0.4);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .logo-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .faction-name {
+                font-size: 1.8rem;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .ammo-grid, .family-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* Zusätzliche Dekorationselemente */
+        .decoration {
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .decoration-circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(10, 140, 102, 0.1) 0%, transparent 70%);
+            opacity: 0.3;
+            top: 10%;
+            right: 5%;
+            animation: move 15s infinite alternate;
+        }
+        
+        .decoration-circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(10, 140, 102, 0.08) 0%, transparent 70%);
+            top: 60%;
+            left: 5%;
+            animation: move 12s infinite alternate-reverse;
+        }
+        
+        @keyframes move {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="decoration decoration-circle"></div>
+    <div class="decoration decoration-circle"></div>
+    
+    <!-- Lightbox für vergrößerte Bilder -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-image">
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="img/logo.png" alt="Limari Logo" class="logo">
+                <h1 class="faction-name">LIMARI</h1>
+            </div>
+            
+            <a href="https://discord.gg/W6neAES26G" target="_blank" class="discord-btn">
+                <i class="fab fa-discord"></i>
+                Discord beitreten
+            </a>
+        </header>
+        
+        <div class="nav-tabs">
+            <a href="#" class="nav-tab active" data-tab="ammo">Startseite</a>
+            <a href="#" class="nav-tab" data-tab="family">Familienfotos</a>
+        </div>
+        
+        <div class="main-content">
+            <!-- Munitionsbereich -->
+            <div id="ammo-section">
+                <h2 class="title">Munitionspreise</h2>
+                
+                <div class="ammo-grid">
+                    <!-- Pistolen Munition -->
+                    <div class="ammo-card">
+                        <img src="img/Pistol-icon.webp" alt="Pistole" class="weapon-icon">
+                        <h3 class="ammo-name">Pistolen Munition</h3>
+                        <div class="price-tag">
+                            <p class="ammo-price">Preis: 2K</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Revolver Munition -->
+                    <div class="ammo-card">
+                        <img src="img/164px-Heavy-revolver-icon.webp" alt="Revolver" class="weapon-icon" onerror="this.onerror=null; this.src='img/Heavy-revolver-icon.webp'">
+                        <h3 class="ammo-name">Revolver Munition</h3>
+                        <div class="price-tag">
+                            <p class="ammo-price">Preis: 6K</p>
+                        </div>
+                    </div>
+                    
+                    <!-- SMG Munition -->
+                    <div class="ammo-card">
+                        <img src="img/164px-Gusenberg-sweeper-icon.webp" alt="Gusenberg Sweeper" class="weapon-icon gusenberg-icon" onerror="this.onerror=null; this.src='img/Gusenberg-sweeper-icon.webp'">
+                        <h3 class="ammo-name">SMG Munition</h3>
+                        <div class="price-tag">
+                            <p class="ammo-price">Preis: 7K</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Gewehr Munition -->
+                    <div class="ammo-card">
+                        <img src="img/Heavy-rifle-icon.webp" alt="Heavy Rifle" class="weapon-icon">
+                        <h3 class="ammo-name">Gewehr Munition</h3>
+                        <div class="price-tag">
+                            <p class="ammo-price">Preis: 9K</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Schrotflinten Munition -->
+                    <div class="ammo-card">
+                        <img src="img/164px-Sawed-off-shotgun-icon.webp" alt="Sawed-off Shotgun" class="weapon-icon" onerror="this.onerror=null; this.src='img/Sawed-off-shotgun-icon.webp'">
+                        <h3 class="ammo-name">Schrotflinten Munition</h3>
+                        <div class="price-tag">
+                            <p class="ammo-price">Preis: 13K</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Scharfschützen Munition -->
+                    <div class="ammo-card">
+                        <img src="img/Marksman-rifle-icon.webp" alt="Marksman Rifle" class="weapon-icon marksman-icon">
+                        <h3 class="ammo-name">Scharfschützen Munition</h3>
+                        <div class="price-tag">
+                            <p class="ammo-price">Preis: 15K</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Familienfotos Bereich -->
+            <div id="family-section" class="family-section">
+                <h2 class="title">Limari Familienfotos</h2>
+                
+                <div class="family-grid">
+                    <!-- Familienfotos von 1.png bis 12.png -->
+                    <div class="family-photo" onclick="openLightbox('img/1.png')">
+                        <img src="img/1.png" alt="Limari Familie Foto 1">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/2.png')">
+                        <img src="img/2.png" alt="Limari Familie Foto 2">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/3.png')">
+                        <img src="img/3.png" alt="Limari Familie Foto 3">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/4.png')">
+                        <img src="img/4.png" alt="Limari Familie Foto 4">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/5.png')">
+                        <img src="img/5.png" alt="Limari Familie Foto 5">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/6.png')">
+                        <img src="img/6.png" alt="Limari Familie Foto 6">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/7.png')">
+                        <img src="img/7.png" alt="Limari Familie Foto 7">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/8.png')">
+                        <img src="img/8.png" alt="Limari Familie Foto 8">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/9.png')">
+                        <img src="img/9.png" alt="Limari Familie Foto 9">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/10.png')">
+                        <img src="img/10.png" alt="Limari Familie Foto 10">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/11.png')">
+                        <img src="img/11.png" alt="Limari Familie Foto 11">
+                    </div>
+                    <div class="family-photo" onclick="openLightbox('img/12.png')">
+                        <img src="img/12.png" alt="Limari Familie Foto 12">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Bei größeren Bestellungen ist ein Mengenrabatt möglich.</p>
+        </div>
+    </div>
+
+    <script>
+        // Tab-Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            const ammoSection = document.getElementById('ammo-section');
+            const familySection = document.getElementById('family-section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktiven Tab markieren
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Richtigen Bereich anzeigen
+                    const tabName = this.getAttribute('data-tab');
+                    if (tabName === 'ammo') {
+                        ammoSection.style.display = 'block';
+                        familySection.style.display = 'none';
+                    } else if (tabName === 'family') {
+                        ammoSection.style.display = 'none';
+                        familySection.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Lightbox Funktionen
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxClose = document.getElementById('lightbox-close');
+            
+            window.openLightbox = function(imageSrc) {
+                lightbox.style.display = 'flex';
+                lightboxImage.src = imageSrc;
+                document.body.style.overflow = 'hidden'; // Scrollen im Hintergrund verhindern
+            }
+            
+            lightboxClose.addEventListener('click', function() {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Scrollen wieder erlauben
+            });
+            
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Partikel-Animation
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                createParticle();
+            }
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 4 + 1;
+                const posX = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 15 + 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}vw`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Zufällige Transparenz für Partikel
+                const opacity = Math.random() * 0.4 + 0.2;
+                particle.style.opacity = opacity;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Partikel nach der Animation neu erstellen
+                setTimeout(() => {
+                    particle.remove();
+                    createParticle();
+                }, (delay + duration) * 1000);
+            }
+            
+            // Sanfte Hover-Effekte für Karten
+            const cards = document.querySelectorAll('.ammo-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
