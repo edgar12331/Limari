@@ -24,18 +24,12 @@
         }
         
         body {
-    background-image: url('img/background.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
-
-
-        
-        
-
+            background-image: url('img/background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
         
         .container {
             max-width: 1400px;
@@ -767,7 +761,7 @@
             <span class="modal-close" id="modalClose">&times;</span>
             <img id="modalWeaponIcon" src="" alt="Weapon Icon" class="modal-weapon-icon">
             <h2 id="modalAmmoName" class="modal-ammo-name"></h2>
-            <p class="modal-price">Preis pro Paket: <span id="modalPricePer">0</span> Magazin</p>
+            <p class="modal-price">Preis pro Magazin: <span id="modalPricePer">0</span></p>
             
             <div class="slider-container">
                 <label class="slider-label">Anzahl der Magazine:</label>
@@ -779,7 +773,7 @@
                 Gesamtpreis: <span id="totalCost">0</span> 
             </div>
             
-           
+            <button class="buy-button" id="buyButton">Jetzt kaufen</button>
         </div>
     </div>
     
@@ -1152,7 +1146,7 @@
                 }, 1000);
             });
             
-            // Video Easter Egg Funktionen
+            // Video Easter Egg Funktionen - FIXED
             const videoButton = document.getElementById('videoButton');
             const videoModal = document.getElementById('videoModal');
             const videoPlayer = document.getElementById('videoPlayer');
@@ -1180,7 +1174,8 @@
                     counterElement.style.display = 'none';
                 }, 5000);
                 
-                videoPlayer.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
+                // FIX: Korrekter YouTube Embed Link
+                videoPlayer.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0";
                 videoModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             });
