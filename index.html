@@ -31,7 +31,7 @@
             cursor: none;
         }
         
-        /* Haupt-Hintergrund - EINFACHE LÖSUNG */
+        /* Haupt-Hintergrund */
         body::before {
             content: '';
             position: fixed;
@@ -41,27 +41,12 @@
             height: 100%;
             background: 
                 linear-gradient(rgba(0, 23, 15, 0.8), rgba(0, 23, 15, 0.9)),
-                url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+                url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             z-index: -1;
-        }
-        
-        /* Fallback für eigenes Bild */
-        .custom-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('background.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.8;
-            z-index: -2;
         }
         
         .container {
@@ -382,8 +367,16 @@
             color: #555;
         }
         
-        .footer p {
-            margin: 5px 0;
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .footer-logo {
+            height: 30px;
         }
         
         /* Easter Egg Video Button */
@@ -566,19 +559,21 @@
                 bottom: 40px;
                 left: 10px;
             }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Fallback für eigenes Hintergrundbild -->
-    <div class="custom-background"></div>
-    
     <!-- Easter Egg Video Button -->
     <div class="video-button" id="videoButton" title="Easter Egg">?</div>
     
     <!-- Easter Egg Counter -->
     <div class="easter-egg-counter" id="easterEggCounter">
-        Entdeckt von: <span id="discoverCount">8</span> Personen
+        Entdeckt von: <span id="discoverCount">0</span> Personen
     </div>
     
     <!-- Copyright Hinweis -->
@@ -721,11 +716,17 @@
         
         <div class="footer">
             <p>Bei größeren Bestellungen ist ein Mengenrabatt möglich.</p>
-            <p>Besuche unseren FiveM Server für mehr Action! | Limari Fraktion</p>
+            <div class="footer-content">
+                <img src="img/logo.png" alt="Limari Logo" class="footer-logo">
+                <p>Limari</p>
+            </div>
         </div>
     </div>
 
     <script>
+        // Globaler Counter (für alle Benutzer gleich)
+        let globalDiscoverCount = 0;
+
         // Einfacher Mouse Trail Effect
         document.addEventListener('DOMContentLoaded', function() {
             // Mouse Trail Variablen
@@ -791,14 +792,16 @@
                 animate();
             }
 
-            // Easter Egg Counter - MANUELL AUF 8 GESETZT
-            let discoverCount = 8; // Manuell auf 8 gesetzt
-            let hasDiscovered = true; // Bereits entdeckt
+            // Easter Egg Counter - Global für alle Benutzer
+            let hasDiscovered = localStorage.getItem('hasDiscoveredEasterEgg') === 'true';
             
             // Counter anzeigen
             const counterElement = document.getElementById('easterEggCounter');
             const countElement = document.getElementById('discoverCount');
-            countElement.textContent = discoverCount;
+            
+            // Counter von localStorage laden oder mit 0 starten
+            globalDiscoverCount = parseInt(localStorage.getItem('globalDiscoverCount')) || 0;
+            countElement.textContent = globalDiscoverCount;
 
             // Tab-Navigation
             const tabs = document.querySelectorAll('.nav-tab');
@@ -855,7 +858,15 @@
             let hideCounterTimeout = null;
             
             videoButton.addEventListener('click', function() {
-                // Counter wird nicht mehr erhöht, da bereits 8 erreicht
+                // Counter erhöhen wenn dieser Benutzer noch nicht entdeckt hat
+                if (!hasDiscovered) {
+                    globalDiscoverCount++;
+                    localStorage.setItem('globalDiscoverCount', globalDiscoverCount);
+                    localStorage.setItem('hasDiscoveredEasterEgg', 'true');
+                    hasDiscovered = true;
+                    countElement.textContent = globalDiscoverCount;
+                }
+                
                 // Counter anzeigen für 5 Sekunden
                 counterElement.style.display = 'block';
                 
