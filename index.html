@@ -24,26 +24,34 @@
         }
         
         body {
-            background-color: #000;
+            background-color: #000000;
             color: #333;
             min-height: 100vh;
             overflow-x: hidden;
             cursor: none;
         }
         
-        /* Haupt-Hintergrund */
-        .background-container {
+        /* Haupt-Hintergrund - EINFACHE LÖSUNG */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
-            background: #00170F;
+            background: 
+                linear-gradient(rgba(0, 23, 15, 0.8), rgba(0, 23, 15, 0.9)),
+                url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            z-index: -1;
         }
         
-        .background-image {
-            position: absolute;
+        /* Fallback für eigenes Bild */
+        .custom-background {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -52,17 +60,8 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-        }
-        
-        /* Overlay für bessere Lesbarkeit */
-        .background-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 23, 15, 0.7);
-            z-index: -1;
+            opacity: 0.8;
+            z-index: -2;
         }
         
         .container {
@@ -571,22 +570,19 @@
     </style>
 </head>
 <body>
-    <!-- Hintergrund Container -->
-    <div class="background-container">
-        <div class="background-image"></div>
-        <div class="background-overlay"></div>
-    </div>
+    <!-- Fallback für eigenes Hintergrundbild -->
+    <div class="custom-background"></div>
     
     <!-- Easter Egg Video Button -->
     <div class="video-button" id="videoButton" title="Easter Egg">?</div>
     
     <!-- Easter Egg Counter -->
     <div class="easter-egg-counter" id="easterEggCounter">
-        Entdeckt von: <span id="discoverCount">0</span> Personen
+        Entdeckt von: <span id="discoverCount">8</span> Personen
     </div>
     
     <!-- Copyright Hinweis -->
-    <div class="copyright">Alle Rechte sind Dr. Pablo vorbehalten</div>
+    <div class="copyright">Alle Rechte sind Dr.Pablooo vorbehalten</div>
     
     <!-- Video Modal -->
     <div class="video-modal" id="videoModal">
@@ -724,7 +720,8 @@
         </div>
         
         <div class="footer">
-            <p>Bei größeren Bestellungen ist ein Mengenrabatt möglich. | Limari</p>
+            <p>Bei größeren Bestellungen ist ein Mengenrabatt möglich.</p>
+            <p>Besuche unseren FiveM Server für mehr Action! | Limari Fraktion</p>
         </div>
     </div>
 
@@ -794,9 +791,9 @@
                 animate();
             }
 
-            // Easter Egg Counter (direkt in HTML eingebaut)
-            let discoverCount = parseInt(localStorage.getItem('easterEggDiscoverCount')) || 0;
-            let hasDiscovered = localStorage.getItem('hasDiscoveredEasterEgg') === 'true';
+            // Easter Egg Counter - MANUELL AUF 8 GESETZT
+            let discoverCount = 8; // Manuell auf 8 gesetzt
+            let hasDiscovered = true; // Bereits entdeckt
             
             // Counter anzeigen
             const counterElement = document.getElementById('easterEggCounter');
@@ -858,24 +855,16 @@
             let hideCounterTimeout = null;
             
             videoButton.addEventListener('click', function() {
-                // Counter erhöhen wenn noch nicht entdeckt
-                if (!hasDiscovered) {
-                    discoverCount++;
-                    localStorage.setItem('easterEggDiscoverCount', discoverCount);
-                    localStorage.setItem('hasDiscoveredEasterEgg', 'true');
-                    hasDiscovered = true;
-                    countElement.textContent = discoverCount;
-                    
-                    // Counter anzeigen für 5 Sekunden
-                    counterElement.style.display = 'block';
-                    
-                    if (hideCounterTimeout) {
-                        clearTimeout(hideCounterTimeout);
-                    }
-                    hideCounterTimeout = setTimeout(() => {
-                        counterElement.style.display = 'none';
-                    }, 5000);
+                // Counter wird nicht mehr erhöht, da bereits 8 erreicht
+                // Counter anzeigen für 5 Sekunden
+                counterElement.style.display = 'block';
+                
+                if (hideCounterTimeout) {
+                    clearTimeout(hideCounterTimeout);
                 }
+                hideCounterTimeout = setTimeout(() => {
+                    counterElement.style.display = 'none';
+                }, 5000);
                 
                 videoPlayer.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
                 videoModal.style.display = 'flex';
@@ -892,12 +881,10 @@
             });
             
             videoButton.addEventListener('mouseleave', function() {
-                if (!hasDiscovered) {
-                    // Nur ausblenden wenn noch nicht entdeckt
-                    hideCounterTimeout = setTimeout(() => {
-                        counterElement.style.display = 'none';
-                    }, 5000);
-                }
+                // Nach 5 Sekunden ausblenden
+                hideCounterTimeout = setTimeout(() => {
+                    counterElement.style.display = 'none';
+                }, 5000);
             });
             
             videoClose.addEventListener('click', function() {
