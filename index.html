@@ -14,6 +14,27 @@
             --accent-white: #FFFFFF;
             --accent-gray: #F8F8F8;
             --card-bg: rgba(255, 255, 255, 0.93);
+            --bg-color: #00170F;
+            --text-color: #FFFFFF;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --header-text: #00170F;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --nav-text: #00170F;
+            --footer-bg: rgba(255, 255, 255, 0.9);
+            --footer-text: #555;
+        }
+
+        /* Light Mode Variablen */
+        [data-theme="light"] {
+            --bg-color: #f0f0f0;
+            --text-color: #333333;
+            --header-bg: rgba(0, 23, 15, 0.95);
+            --header-text: #FFFFFF;
+            --nav-bg: rgba(0, 23, 15, 0.9);
+            --nav-text: #FFFFFF;
+            --footer-bg: rgba(0, 23, 15, 0.9);
+            --footer-text: #FFFFFF;
+            --card-bg: rgba(255, 255, 255, 1);
         }
         
         * {
@@ -24,11 +45,14 @@
         }
         
         body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
             background-image: url('img/background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         .container {
@@ -53,11 +77,12 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--header-bg);
             padding: 15px 25px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             animation: float 3s ease-in-out infinite;
+            transition: background 0.3s ease;
         }
         
         @keyframes float {
@@ -74,8 +99,53 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 2rem;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--header-text);
             letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--primary-green);
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5px;
+            margin-left: 15px;
+            transition: background 0.3s ease;
+        }
+        
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s ease;
+        }
+        
+        [data-theme="light"] .theme-toggle::before {
+            transform: translateX(30px);
+        }
+        
+        .theme-icon {
+            font-size: 14px;
+            color: white;
+            z-index: 1;
+        }
+        
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
         /* Navigation */
@@ -87,11 +157,11 @@
         }
         
         .nav-tab {
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--nav-bg);
             padding: 12px 25px;
             border-radius: 50px;
             text-decoration: none;
-            color: var(--primary-dark);
+            color: var(--nav-text);
             font-weight: 600;
             transition: all 0.3s ease;
             border: 1px solid transparent;
@@ -537,10 +607,11 @@
             text-align: center;
             padding: 30px;
             margin-top: 40px;
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--footer-bg);
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            color: #555;
+            color: var(--footer-text);
+            transition: background 0.3s ease, color 0.3s ease;
         }
         
         .footer-content {
@@ -740,6 +811,11 @@
                 flex-direction: column;
                 gap: 10px;
             }
+            
+            .header-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -773,7 +849,7 @@
                 Gesamtpreis: <span id="totalCost">0</span> 
             </div>
             
-           
+            <button class="buy-button" id="buyButton">Jetzt kaufen</button>
         </div>
     </div>
     
@@ -798,10 +874,17 @@
                 <h1 class="faction-name">LIMARI</h1>
             </div>
             
-            <a href="https://discord.gg/W6neAES26G" target="_blank" class="discord-btn">
-                <i class="fab fa-discord"></i>
-                Discord beitreten
-            </a>
+            <div class="header-controls">
+                <div class="theme-toggle" id="themeToggle" title="Dark/Light Mode umschalten">
+                    <i class="fas fa-moon theme-icon"></i>
+                    <i class="fas fa-sun theme-icon"></i>
+                </div>
+                
+                <a href="https://discord.gg/W6neAES26G" target="_blank" class="discord-btn">
+                    <i class="fab fa-discord"></i>
+                    Discord beitreten
+                </a>
+            </div>
         </header>
         
         <div class="nav-tabs">
@@ -922,6 +1005,22 @@
     </div>
 
     <script>
+        // Theme Toggle Funktion
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        
+        // Theme beim Laden setzen
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        // Theme Toggle Event
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
         // Globaler Counter (für alle Benutzer gleich)
         let globalDiscoverCount = 0;
 
@@ -1175,7 +1274,7 @@
                 }, 5000);
                 
                 // FIX: Korrekter YouTube Embed Link
-                videoPlayer.src = "https://youtu.be/dQw4w9WgXcQ?list=RDdQw4w9WgXcQautoplay=1";
+                videoPlayer.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
                 videoModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             });
