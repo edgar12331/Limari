@@ -13,28 +13,36 @@
             --primary-light: #0dc295;
             --accent-white: #FFFFFF;
             --accent-gray: #F8F8F8;
-            --card-bg: rgba(255, 255, 255, 0.93);
-            --bg-color: #00170F;
-            --text-color: #FFFFFF;
-            --header-bg: rgba(255, 255, 255, 0.95);
-            --header-text: #00170F;
-            --nav-bg: rgba(255, 255, 255, 0.9);
-            --nav-text: #00170F;
-            --footer-bg: rgba(255, 255, 255, 0.9);
-            --footer-text: #555;
+            
+            /* Dark Mode Standardwerte */
+            --bg-color: #0a0f0d;
+            --text-color: #e0e0e0;
+            --header-bg: rgba(10, 15, 13, 0.95);
+            --header-text: #0dc295;
+            --nav-bg: rgba(20, 30, 25, 0.9);
+            --nav-text: #0dc295;
+            --footer-bg: rgba(20, 30, 25, 0.9);
+            --footer-text: #0dc295;
+            --card-bg: rgba(15, 25, 20, 0.95);
+            --card-text: #e0e0e0;
+            --card-border: rgba(10, 140, 102, 0.3);
+            --title-color: #0dc295;
         }
 
         /* Light Mode Variablen */
         [data-theme="light"] {
-            --bg-color: #f0f0f0;
+            --bg-color: #f5f5f5;
             --text-color: #333333;
-            --header-bg: rgba(0, 23, 15, 0.95);
-            --header-text: #FFFFFF;
-            --nav-bg: rgba(0, 23, 15, 0.9);
-            --nav-text: #FFFFFF;
-            --footer-bg: rgba(0, 23, 15, 0.9);
-            --footer-text: #FFFFFF;
-            --card-bg: rgba(255, 255, 255, 1);
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --header-text: #0a8c66;
+            --nav-bg: rgba(240, 240, 240, 0.9);
+            --nav-text: #0a8c66;
+            --footer-bg: rgba(240, 240, 240, 0.9);
+            --footer-text: #555555;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --card-text: #333333;
+            --card-border: rgba(0, 0, 0, 0.1);
+            --title-color: #0a8c66;
         }
         
         * {
@@ -53,6 +61,7 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
         }
         
         .container {
@@ -82,7 +91,8 @@
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             animation: float 3s ease-in-out infinite;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
         
         @keyframes float {
@@ -118,6 +128,7 @@
             padding: 0 5px;
             margin-left: 15px;
             transition: background 0.3s ease;
+            box-shadow: 0 0 10px rgba(10, 140, 102, 0.3);
         }
         
         .theme-toggle::before {
@@ -167,6 +178,7 @@
             border: 1px solid transparent;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(5px);
         }
         
         .nav-tab::before {
@@ -247,7 +259,7 @@
             font-size: 2.8rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            color: var(--accent-white);
+            color: var(--title-color);
             font-family: 'Orbitron', sans-serif;
             position: relative;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -279,15 +291,17 @@
         
         .ammo-card {
             background: var(--card-bg);
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--card-border);
             border-radius: 15px;
             padding: 25px;
             text-align: center;
             transition: all 0.4s ease;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            color: var(--card-text);
+            backdrop-filter: blur(5px);
         }
         
         .ammo-card::before {
@@ -305,7 +319,7 @@
         
         .ammo-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         
         .ammo-card:hover::before {
@@ -334,7 +348,7 @@
         
         .ammo-card:hover .weapon-icon {
             transform: scale(1.1);
-            filter: drop-shadow(0 0 10px rgba(10, 140, 102, 0.2));
+            filter: drop-shadow(0 0 10px rgba(10, 140, 102, 0.3));
         }
         
         .ammo-card:hover .gusenberg-icon {
@@ -348,7 +362,7 @@
         .ammo-name {
             font-size: 1.6rem;
             margin-bottom: 20px;
-            color: #222;
+            color: var(--card-text);
             z-index: 1;
             position: relative;
             font-family: 'Orbitron', sans-serif;
@@ -407,6 +421,7 @@
             position: relative;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             animation: modalAppear 0.5s ease-out;
+            color: var(--card-text);
         }
         
         @keyframes modalAppear {
@@ -437,7 +452,7 @@
         .modal-ammo-name {
             font-size: 1.8rem;
             margin-bottom: 10px;
-            color: #222;
+            color: var(--card-text);
             font-family: 'Orbitron', sans-serif;
         }
         
@@ -456,6 +471,7 @@
             display: block;
             margin-bottom: 10px;
             font-weight: 500;
+            color: var(--card-text);
         }
         
         .slider {
@@ -490,6 +506,7 @@
             font-size: 1.2rem;
             margin: 10px 0;
             font-weight: 600;
+            color: var(--card-text);
         }
         
         .total-price {
@@ -500,6 +517,7 @@
             border-radius: 10px;
             border: 1px solid rgba(10, 140, 102, 0.2);
             transition: all 0.3s;
+            color: var(--card-text);
         }
         
         .total-price.highlight {
@@ -611,7 +629,8 @@
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             color: var(--footer-text);
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
         
         .footer-content {
