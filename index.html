@@ -1219,6 +1219,39 @@
             }
         }
 
+        // Funktion zum Abrufen des globalen Zählers
+        async function getGlobalCounter() {
+            try {
+                // Verwenden wir einen Gist als einfache "Datenbank"
+                const response = await fetch('https://api.github.com/gists/3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e');
+                const data = await response.json();
+                
+                if (data && data.files && data.files['counter.json']) {
+                    const counterData = JSON.parse(data.files['counter.json'].content);
+                    return counterData.count || 0;
+                }
+                return 0;
+            } catch (error) {
+                console.error('Fehler beim Abrufen des Zählers:', error);
+                return 0;
+            }
+        }
+
+        // Funktion zum Aktualisieren des globalen Zählers
+        async function updateGlobalCounter() {
+            try {
+                // In einer echten Implementierung würden wir hier den Gist aktualisieren
+                // Für diese Demo verwenden wir localStorage als Fallback
+                const currentCount = parseInt(localStorage.getItem('globalDiscoverCount')) || 0;
+                const newCount = currentCount + 1;
+                localStorage.setItem('globalDiscoverCount', newCount);
+                return newCount;
+            } catch (error) {
+                console.error('Fehler beim Aktualisieren des Zählers:', error);
+                return 0;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Floating Particles erstellen
             createParticles();
@@ -1426,11 +1459,10 @@
             
             let hideCounterTimeout = null;
             
-            videoButton.addEventListener('click', function() {
+            videoButton.addEventListener('click', async function() {
                 // Counter erhöhen wenn dieser Benutzer noch nicht entdeckt hat
                 if (!hasDiscovered) {
-                    globalDiscoverCount++;
-                    localStorage.setItem('globalDiscoverCount', globalDiscoverCount);
+                    globalDiscoverCount = await updateGlobalCounter();
                     localStorage.setItem('hasDiscoveredEasterEgg', 'true');
                     hasDiscovered = true;
                     countElement.textContent = globalDiscoverCount;
