@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Limari Munitionspreise - FiveM Server</title>
+    <title>Limari - Aufgelöst</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -145,108 +145,50 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
-        /* Navigation */
-        .nav-tabs {
+        /* Hauptbereich */
+        .main-content {
+            position: relative;
+            margin: 50px 0;
             display: flex;
             justify-content: center;
-            margin: 30px 0 50px;
-            gap: 15px;
-        }
-        
-        .nav-tab {
-            background: rgba(117, 145, 178, 0.9);
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 600;
-            transition: all 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .nav-tab::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.6s;
-        }
-        
-        .nav-tab:hover::before {
-            left: 100%;
-        }
-        
-        .nav-tab.active {
-            background: rgba(255, 255, 255, 0.25);
-            color: white;
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
-        }
-        
-        .nav-tab:hover {
-            background: rgba(255, 255, 255, 0.3);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
-        }
-        
-        /* Discord Button */
-        .discord-btn {
-            display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(117, 145, 178, 0.9);
-            color: white;
-            text-decoration: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.4s ease;
-            box-shadow: 0 8px 25px rgba(117, 145, 178, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
+            min-height: 60vh;
         }
         
-        .discord-btn::after {
+        .offline-message {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease forwards;
+        }
+        
+        .offline-message::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
         
-        .discord-btn:hover::after {
-            transform: translateX(100%);
-        }
-        
-        .discord-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(117, 145, 178, 0.5);
-            background: rgba(117, 145, 178, 1);
-        }
-        
-        /* Hauptbereich */
-        .main-content {
-            position: relative;
-            margin: 50px 0;
+        .offline-message:hover::before {
+            opacity: 1;
         }
         
         .title {
             text-align: center;
-            margin: 50px 0;
+            margin-bottom: 30px;
             font-size: 3.2rem;
             text-transform: uppercase;
             letter-spacing: 4px;
@@ -282,396 +224,64 @@
             50% { transform: scale(1.1); }
         }
         
-        /* Munitions-Grid */
-        .ammo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 35px;
-            margin-bottom: 80px;
+        .message {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.9);
         }
         
-        .ammo-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.5s ease;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            color: var(--text-color);
-            backdrop-filter: blur(15px);
+        .highlight {
+            color: #e94560;
+            font-weight: bold;
         }
         
-        .ammo-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        
-        .ammo-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-        
-        .ammo-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-        
-        .ammo-card:hover::before {
-            opacity: 1;
-        }
-        
-        .ammo-card:hover::after {
-            transform: translateX(100%);
-        }
-        
-        .weapon-icon {
-            height: 110px;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3));
-            z-index: 1;
-            position: relative;
-            transition: all 0.4s ease;
-        }
-        
-        /* Spezifische Anpassungen für bestimmte Waffen - Gusenberg kleiner */
-        .gusenberg-icon {
-            height: 85px; /* Verkleinert von 100px auf 85px */
-            transform: scale(0.8); /* Verkleinert von 0.9 auf 0.8 */
-        }
-        
-        .marksman-icon {
-            height: 105px;
-            transform: scale(0.95);
-        }
-        
-        .ammo-card:hover .weapon-icon {
-            transform: scale(1.15);
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
-        }
-        
-        .ammo-card:hover .gusenberg-icon {
-            transform: scale(0.9); /* Angepasst von 1.05 auf 0.9 */
-        }
-        
-        .ammo-card:hover .marksman-icon {
-            transform: scale(1.1);
-        }
-        
-        .ammo-name {
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            color: var(--text-color);
-            z-index: 1;
-            position: relative;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 600;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .ammo-price {
-            font-size: 2.2rem;
-            color: rgba(255, 255, 255, 0.95);
-            z-index: 1;
-            position: relative;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
-        }
-        
-        .price-tag {
-            background: rgba(117, 145, 178, 0.3);
-            padding: 15px 30px;
-            border-radius: 12px;
-            display: inline-block;
-            margin-top: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.4s ease;
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-        }
-        
-        .ammo-card:hover .price-tag {
-            background: rgba(255, 255, 255, 0.25);
-            transform: scale(1.08);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Modal für Waffenauswahl */
-        .weapon-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .modal-content {
-            background: rgba(117, 145, 178, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 550px;
-            width: 90%;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-            animation: modalAppear 0.5s ease-out;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(20px);
-        }
-        
-        @keyframes modalAppear {
-            from { opacity: 0; transform: scale(0.8) translateY(50px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 28px;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .modal-close:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(90deg);
-        }
-        
-        .modal-weapon-icon {
-            height: 140px;
-            margin: 20px 0;
-            filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.4));
-        }
-        
-        .modal-ammo-name {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        
-        .modal-price {
-            font-size: 1.6rem;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 30px;
-            font-weight: 600;
-        }
-        
-        .slider-container {
+        .audio-player {
             margin: 30px 0;
         }
         
-        .slider-label {
-            display: block;
-            margin-bottom: 15px;
-            font-weight: 500;
+        .play-button {
+            background: rgba(117, 145, 178, 0.9);
             color: white;
-            font-size: 1.1rem;
-        }
-        
-        .slider {
-            width: 100%;
-            height: 12px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: rgba(255, 255, 255, 0.3);
-            outline: none;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.5);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-        }
-        
-        .slider::-webkit-slider-thumb:hover {
-            background: white;
-            transform: scale(1.2);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.7);
-        }
-        
-        .quantity-display {
-            font-size: 1.3rem;
-            margin: 15px 0;
-            font-weight: 600;
-            color: white;
-        }
-        
-        .total-price {
-            font-size: 1.7rem;
-            margin: 25px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s;
-            color: white;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
-        }
-        
-        .total-price.highlight {
-            background: rgba(255, 255, 255, 0.25);
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
-        }
-        
-        /* Familienfotos Bereich */
-        .family-section {
-            display: none;
-            margin: 50px 0;
-        }
-        
-        .family-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-        }
-        
-        .family-photo {
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transition: all 0.4s ease;
-            cursor: pointer;
-            background: rgba(117, 145, 178, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(117, 145, 178, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             position: relative;
+            overflow: hidden;
         }
         
-        .family-photo::before {
+        .play-button::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 1;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
         }
         
-        .family-photo:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            background: rgba(117, 145, 178, 0.25);
+        .play-button:hover::before {
+            left: 100%;
         }
         
-        .family-photo:hover::before {
-            opacity: 1;
+        .play-button:hover {
+            background: rgba(117, 145, 178, 1);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(117, 145, 178, 0.5);
         }
         
-        .family-photo img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-        
-        .family-photo:hover img {
-            transform: scale(1.05);
-        }
-        
-        /* Lightbox Styling */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .lightbox-content {
-            max-width: 90%;
-            max-height: 90%;
-            margin: auto;
-            display: block;
-            border-radius: 10px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-        
-        .lightbox-close {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            color: white;
-            font-size: 35px;
-            cursor: pointer;
-            background: rgba(117, 145, 178, 0.7);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        
-        .lightbox-close:hover {
-            background: rgba(117, 145, 178, 0.9);
-            transform: scale(1.1);
+        .play-button:active {
+            transform: translateY(1px);
         }
         
         /* Footer */
@@ -717,153 +327,7 @@
             filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
         }
         
-        /* Easter Egg Video Button */
-        .video-button {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            width: 25px;
-            height: 25px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.4s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            color: #7591b2;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
-            animation: pulse 2s infinite;
-        }
-        
-        .video-button:hover {
-            background-color: rgba(255, 255, 255, 0.95);
-            transform: scale(1.3);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.5);
-        }
-        
-        /* Easter Egg Counter */
-        .easter-egg-counter {
-            position: fixed;
-            bottom: 55px;
-            left: 25px;
-            background: rgba(117, 145, 178, 0.9);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 12px;
-            z-index: 99;
-            backdrop-filter: blur(10px);
-            display: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Video Modal */
-        .video-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .video-container {
-            position: relative;
-            width: 85%;
-            max-width: 900px;
-        }
-        
-        .video-close {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            color: white;
-            font-size: 35px;
-            cursor: pointer;
-            background: rgba(117, 145, 178, 0.7);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        
-        .video-close:hover {
-            background: rgba(117, 145, 178, 0.9);
-            transform: scale(1.1);
-        }
-        
-        .video-player {
-            width: 100%;
-            height: 500px;
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Copyright Hinweis */
-        .copyright {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.7);
-            z-index: 99;
-            background: rgba(117, 145, 178, 0.7);
-            padding: 8px 15px;
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Trailing Cursor */
-        .trail {
-            position: absolute;
-            height: 8px;
-            width: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.8);
-            pointer-events: none;
-            z-index: 9999;
-        }
-        
-        /* Animationen */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .ammo-card {
-            animation: fadeInUp 0.8s ease forwards;
-            opacity: 0;
-        }
-        
-        .ammo-card:nth-child(1) { animation-delay: 0.1s; }
-        .ammo-card:nth-child(2) { animation-delay: 0.2s; }
-        .ammo-card:nth-child(3) { animation-delay: 0.3s; }
-        .ammo-card:nth-child(4) { animation-delay: 0.4s; }
-        .ammo-card:nth-child(5) { animation-delay: 0.5s; }
-        .ammo-card:nth-child(6) { animation-delay: 0.6s; }
-        
-        /* Neue moderne Elemente */
+        /* Floating Particles */
         .floating-particles {
             position: fixed;
             top: 0;
@@ -898,22 +362,172 @@
             }
         }
         
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 10px;
+        /* Animationen für fliegende Bilder */
+        .flying-image {
+            position: fixed;
+            width: 150px;
+            height: auto;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
         }
         
-        ::-webkit-scrollbar-track {
-            background: rgba(117, 145, 178, 0.3);
+        /* Verschiedene Flugrichtungen */
+        .fly-left-to-right {
+            animation: flyLeftToRight 20s linear forwards;
         }
         
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 5px;
+        .fly-right-to-left {
+            animation: flyRightToLeft 20s linear forwards;
         }
         
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.9);
+        .fly-top-to-bottom {
+            animation: flyTopToBottom 20s linear forwards;
+        }
+        
+        .fly-bottom-to-top {
+            animation: flyBottomToTop 20s linear forwards;
+        }
+        
+        .fly-diagonal-1 {
+            animation: flyDiagonal1 20s linear forwards;
+        }
+        
+        .fly-diagonal-2 {
+            animation: flyDiagonal2 20s linear forwards;
+        }
+        
+        .fly-diagonal-3 {
+            animation: flyDiagonal3 20s linear forwards;
+        }
+        
+        .fly-diagonal-4 {
+            animation: flyDiagonal4 20s linear forwards;
+        }
+        
+        @keyframes flyLeftToRight {
+            0% {
+                transform: translateX(-200px) translateY(var(--start-y)) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(calc(100vw + 200px)) translateY(var(--end-y)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flyRightToLeft {
+            0% {
+                transform: translateX(calc(100vw + 200px)) translateY(var(--start-y)) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(-200px) translateY(var(--end-y)) rotate(-360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flyTopToBottom {
+            0% {
+                transform: translateX(var(--start-x)) translateY(-200px) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(var(--end-x)) translateY(calc(100vh + 200px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flyBottomToTop {
+            0% {
+                transform: translateX(var(--start-x)) translateY(calc(100vh + 200px)) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(var(--end-x)) translateY(-200px) rotate(-360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flyDiagonal1 {
+            0% {
+                transform: translateX(-200px) translateY(-200px) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(calc(100vw + 200px)) translateY(calc(100vh + 200px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flyDiagonal2 {
+            0% {
+                transform: translateX(calc(100vw + 200px)) translateY(-200px) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(-200px) translateY(calc(100vh + 200px)) rotate(-360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flyDiagonal3 {
+            0% {
+                transform: translateX(-200px) translateY(calc(100vh + 200px)) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(calc(100vw + 200px)) translateY(-200px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flyDiagonal4 {
+            0% {
+                transform: translateX(calc(100vw + 200px)) translateY(calc(100vh + 200px)) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(-200px) translateY(-200px) rotate(-360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Animationen */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* Responsive Design */
@@ -938,35 +552,12 @@
                 margin: 30px 0;
             }
             
-            .ammo-grid, .family-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
+            .message {
+                font-size: 1.2rem;
             }
             
-            .nav-tabs {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .nav-tab {
-                width: 100%;
-                text-align: center;
-            }
-            
-            .video-player {
-                height: 250px;
-            }
-            
-            .copyright {
-                font-size: 9px;
-                bottom: 15px;
-                right: 15px;
-            }
-            
-            .easter-egg-counter {
-                bottom: 50px;
-                left: 15px;
+            .offline-message {
+                padding: 30px 20px;
             }
             
             .footer-content {
@@ -974,12 +565,8 @@
                 gap: 15px;
             }
             
-            .modal-content {
-                padding: 25px;
-            }
-            
-            .modal-weapon-icon {
-                height: 100px;
+            .flying-image {
+                width: 100px;
             }
             
             /* Hintergrund-Logo auf mobilen Geräten kleiner */
@@ -995,193 +582,33 @@
     <!-- Floating Particles -->
     <div class="floating-particles" id="particles"></div>
     
-    <!-- Easter Egg Video Button -->
-    <div class="video-button" id="videoButton" title="?">?</div>
-    
-    <!-- Easter Egg Counter -->
-    <div class="easter-egg-counter" id="easterEggCounter">
-        Entdeckt von: <span id="discoverCount">0</span> Personen
-    </div>
-    
-    <!-- Copyright Hinweis -->
-    <div class="copyright">Alle Rechte sind Dr.Pablooo vorbehalten</div>
-    
-    <!-- Waffen Modal -->
-    <div class="weapon-modal" id="weaponModal">
-        <div class="modal-content">
-            <span class="modal-close" id="modalClose">&times;</span>
-            <img id="modalWeaponIcon" src="" alt="Weapon Icon" class="modal-weapon-icon">
-            <h2 id="modalAmmoName" class="modal-ammo-name"></h2>
-            <p class="modal-price">Preis pro Magazin: <span id="modalPricePer">0</span></p>
-            
-            <div class="slider-container">
-                <label class="slider-label">Anzahl der Magazine:</label>
-                <input type="range" id="ammoSlider" min="1" max="1000" value="1" class="slider">
-                <div class="quantity-display">Menge: <span id="quantityValue">1</span> Magazine</div>
-            </div>
-            
-            <div class="total-price" id="totalPrice">
-                Gesamtpreis: <span id="totalCost">0</span> 
-            </div>
-        </div>
-    </div>
-    
-    <!-- Video Modal -->
-    <div class="video-modal" id="videoModal">
-        <div class="video-container">
-            <span class="video-close" id="videoClose">&times;</span>
-            <iframe class="video-player" id="videoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    </div>
-    
-    <!-- Lightbox für vergrößerte Bilder -->
-    <div class="lightbox" id="lightbox">
-        <span class="lightbox-close" id="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-image">
-    </div>
-    
     <div class="container">
         <header>
             <div class="logo-container">
                 <img src="img/logo.png" alt="Limari Logo" class="logo">
                 <h1 class="faction-name">LIMARI</h1>
             </div>
-            
-            <a href="https://discord.gg/W6neAES26G" target="_blank" class="discord-btn">
-                <i class="fab fa-discord"></i>
-                Discord beitreten
-            </a>
         </header>
         
-        <div class="nav-tabs">
-            <a href="#" class="nav-tab active" data-tab="ammo">Munition</a>
-            <a href="#" class="nav-tab" data-tab="family">Familienfotos</a>
-        </div>
-        
         <div class="main-content">
-            <!-- Munitionsbereich -->
-            <div id="ammo-section">
-                <h2 class="title">Munitionspreise</h2>
-                
-                <div class="ammo-grid">
-                    <!-- Munitionskarten hier -->
-                    <div class="ammo-card" data-ammo-type="pistol" data-price="2000">
-                        <img src="img/Pistol-icon.webp" alt="Pistole" class="weapon-icon">
-                        <h3 class="ammo-name">Pistolen Munition</h3>
-                        <div class="price-tag">
-                            <p class="ammo-price">Preis: 2K</p>
-                        </div>
-                    </div>
-                    
-                    <div class="ammo-card" data-ammo-type="revolver" data-price="6000">
-                        <img src="img/164px-Heavy-revolver-icon.webp" alt="Revolver" class="weapon-icon" onerror="this.onerror=null; this.src='img/Heavy-revolver-icon.webp'">
-                        <h3 class="ammo-name">Revolver Munition</h3>
-                        <div class="price-tag">
-                            <p class="ammo-price">Preis: 6K</p>
-                        </div>
-                    </div>
-                    
-                    <div class="ammo-card" data-ammo-type="smg" data-price="7000">
-                        <img src="img/164px-Gusenberg-sweeper-icon.webp" alt="Gusenberg Sweeper" class="weapon-icon gusenberg-icon" onerror="this.onerror=null; this.src='img/Gusenberg-sweeper-icon.webp'">
-                        <h3 class="ammo-name">SMG Munition</h3>
-                        <div class="price-tag">
-                            <p class="ammo-price">Preis: 7K</p>
-                        </div>
-                    </div>
-                    
-                    <div class="ammo-card" data-ammo-type="rifle" data-price="9000">
-                        <img src="img/Heavy-rifle-icon.webp" alt="Heavy Rifle" class="weapon-icon">
-                        <h3 class="ammo-name">Gewehr Munition</h3>
-                        <div class="price-tag">
-                            <p class="ammo-price">Preis: 9K</p>
-                        </div>
-                    </div>
-                    
-                    <div class="ammo-card" data-ammo-type="shotgun" data-price="13000">
-                        <img src="img/164px-Sawed-off-shotgun-icon.webp" alt="Sawed-off Shotgun" class="weapon-icon" onerror="this.onerror=null; this.src='img/Sawed-off-shotgun-icon.webp'">
-                        <h3 class="ammo-name">Schrotflinten Munition</h3>
-                        <div class="price-tag">
-                            <p class="ammo-price">Preis: 13K</p>
-                        </div>
-                    </div>
-                    
-                    <div class="ammo-card" data-ammo-type="sniper" data-price="15000">
-                        <img src="img/Marksman-rifle-icon.webp" alt="Marksman Rifle" class="weapon-icon marksman-icon">
-                        <h3 class="ammo-name">Scharfschützen Munition</h3>
-                        <div class="price-tag">
-                            <p class="ammo-price">Preis: 15K</p>
-                        </div>
-                    </div>
+            <div class="offline-message">
+                <h2 class="title">Limari ist aufgelöst</h2>
+                <div class="message">
+                    Diese Seite ist offline, da <span class="highlight">Limari aufgelöst wurde</span>.
+                    <br><br>
+                    Traurig, aber wahr - eine Ära geht zu Ende.
                 </div>
-            </div>
-            
-            <!-- Familienfotos Bereich -->
-            <div id="family-section" class="family-section">
-                <h2 class="title">Limari Familienfotos</h2>
-                
-                <div class="family-grid">
-                    <!-- Familienfotos hier -->
-                    <div class="family-photo" onclick="openLightbox('img/1.png')">
-                        <img src="img/1.png" alt="Limari Familie Foto 1">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/2.png')">
-                        <img src="img/2.png" alt="Limari Familie Foto 2">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/3.png')">
-                        <img src="img/3.png" alt="Limari Familie Foto 3">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/4.png')">
-                        <img src="img/4.png" alt="Limari Familie Foto 4">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/5.png')">
-                        <img src="img/5.png" alt="Limari Familie Foto 5">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/6.png')">
-                        <img src="img/6.png" alt="Limari Familie Foto 6">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/7.png')">
-                        <img src="img/7.png" alt="Limari Familie Foto 7">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/8.png')">
-                        <img src="img/8.png" alt="Limari Familie Foto 8">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/9.png')">
-                        <img src="img/9.png" alt="Limari Familie Foto 9">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/10.png')">
-                        <img src="img/10.png" alt="Limari Familie Foto 10">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/11.png')">
-                        <img src="img/11.png" alt="Limari Familie Foto 11">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/12.png')">
-                        <img src="img/12.png" alt="Limari Familie Foto 12">
-                    </div>
-                    <!-- Neue Bilder 13-18 -->
-                    <div class="family-photo" onclick="openLightbox('img/13.png')">
-                        <img src="img/13.png" alt="Limari Familie Foto 13">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/14.png')">
-                        <img src="img/14.png" alt="Limari Familie Foto 14">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/15.png')">
-                        <img src="img/15.png" alt="Limari Familie Foto 15">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/16.png')">
-                        <img src="img/16.png" alt="Limari Familie Foto 16">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/17.png')">
-                        <img src="img/17.png" alt="Limari Familie Foto 17">
-                    </div>
-                    <div class="family-photo" onclick="openLightbox('img/18.png')">
-                        <img src="img/18.png" alt="Limari Familie Foto 18">
-                    </div>
+                <div class="audio-player">
+                    <button class="play-button" id="playButton">
+                        <i class="fas fa-play"></i> Ton abspielen
+                    </button>
+                    <audio id="audioPlayer" src="ton.mp3"></audio>
                 </div>
             </div>
         </div>
         
         <div class="footer">
-            <p>Bei größeren Bestellungen ist ein Mengenrabatt möglich.</p>
+            <p>Für mehr Informationen kann man den Ton abspielen.</p>
             <div class="footer-content">
                 <img src="img/logo.png" alt="Limari Logo" class="footer-logo">
                 <p>Limari</p>
@@ -1190,9 +617,6 @@
     </div>
 
     <script>
-        // Globaler Counter (für alle Benutzer gleich)
-        let globalDiscoverCount = 0;
-
         // Floating Particles erstellen
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
@@ -1219,311 +643,152 @@
             }
         }
 
-        // Funktion zum Abrufen des globalen Zählers
-        async function getGlobalCounter() {
-            try {
-                // Verwenden wir einen Gist als einfache "Datenbank"
-                const response = await fetch('https://api.github.com/gists/3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e');
-                const data = await response.json();
-                
-                if (data && data.files && data.files['counter.json']) {
-                    const counterData = JSON.parse(data.files['counter.json'].content);
-                    return counterData.count || 0;
+        // Fliegende Bilder Funktionen
+        let imageInterval;
+        
+        function createFlyingImage() {
+            // Zufällig entscheiden, welches Bild verwendet wird (end.png, end2.png, end3.png, end4.png, end5.png)
+            const imageFiles = ['end.png', 'end2.png', 'end3.png', 'end4.png', 'end5.png'];
+            const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+            
+            // Bild erstellen
+            const img = document.createElement('img');
+            img.src = `img/${randomImage}`;
+            img.alt = "Limari Ende";
+            img.classList.add('flying-image');
+            
+            // Zufällige Größe (50px bis 250px)
+            const size = 50 + Math.random() * 200;
+            img.style.width = `${size}px`;
+            
+            // Zufällige Flugrichtung auswählen
+            const directions = [
+                'fly-left-to-right', 'fly-right-to-left', 
+                'fly-top-to-bottom', 'fly-bottom-to-top',
+                'fly-diagonal-1', 'fly-diagonal-2', 
+                'fly-diagonal-3', 'fly-diagonal-4'
+            ];
+            const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+            
+            // Position und Animation basierend auf der Richtung setzen
+            setupImagePosition(img, randomDirection);
+            
+            // Bild zum Body hinzufügen
+            document.body.appendChild(img);
+            
+            // Animation starten
+            setTimeout(() => {
+                img.classList.add(randomDirection);
+            }, 10);
+            
+            // Bild nach der Animation entfernen
+            setTimeout(() => {
+                if (img.parentNode) {
+                    img.parentNode.removeChild(img);
                 }
-                return 0;
-            } catch (error) {
-                console.error('Fehler beim Abrufen des Zählers:', error);
-                return 0;
+            }, 20000);
+        }
+        
+        function setupImagePosition(img, direction) {
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+            const endX = Math.random() * window.innerWidth;
+            const endY = Math.random() * window.innerHeight;
+            
+            // CSS Variablen für die Animation setzen
+            img.style.setProperty('--start-x', `${startX}px`);
+            img.style.setProperty('--start-y', `${startY}px`);
+            img.style.setProperty('--end-x', `${endX}px`);
+            img.style.setProperty('--end-y', `${endY}px`);
+            
+            // Startposition basierend auf der Richtung setzen
+            switch(direction) {
+                case 'fly-left-to-right':
+                    img.style.left = '-200px';
+                    img.style.top = `${startY}px`;
+                    break;
+                case 'fly-right-to-left':
+                    img.style.left = `${window.innerWidth + 200}px`;
+                    img.style.top = `${startY}px`;
+                    break;
+                case 'fly-top-to-bottom':
+                    img.style.left = `${startX}px`;
+                    img.style.top = '-200px';
+                    break;
+                case 'fly-bottom-to-top':
+                    img.style.left = `${startX}px`;
+                    img.style.top = `${window.innerHeight + 200}px`;
+                    break;
+                case 'fly-diagonal-1':
+                    img.style.left = '-200px';
+                    img.style.top = '-200px';
+                    break;
+                case 'fly-diagonal-2':
+                    img.style.left = `${window.innerWidth + 200}px`;
+                    img.style.top = '-200px';
+                    break;
+                case 'fly-diagonal-3':
+                    img.style.left = '-200px';
+                    img.style.top = `${window.innerHeight + 200}px`;
+                    break;
+                case 'fly-diagonal-4':
+                    img.style.left = `${window.innerWidth + 200}px`;
+                    img.style.top = `${window.innerHeight + 200}px`;
+                    break;
             }
         }
-
-        // Funktion zum Aktualisieren des globalen Zählers
-        async function updateGlobalCounter() {
-            try {
-                // In einer echten Implementierung würden wir hier den Gist aktualisieren
-                // Für diese Demo verwenden wir localStorage als Fallback
-                const currentCount = parseInt(localStorage.getItem('globalDiscoverCount')) || 0;
-                const newCount = currentCount + 1;
-                localStorage.setItem('globalDiscoverCount', newCount);
-                return newCount;
-            } catch (error) {
-                console.error('Fehler beim Aktualisieren des Zählers:', error);
-                return 0;
-            }
+        
+        function startImageAnimation() {
+            // Sofort ein Bild anzeigen
+            createFlyingImage();
+            
+            // Dann alle 15 Sekunden ein neues Bild
+            imageInterval = setInterval(createFlyingImage, 15000);
+        }
+        
+        function stopImageAnimation() {
+            clearInterval(imageInterval);
+            
+            // Alle fliegenden Bilder entfernen
+            const flyingImages = document.querySelectorAll('.flying-image');
+            flyingImages.forEach(img => {
+                if (img.parentNode) {
+                    img.parentNode.removeChild(img);
+                }
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             // Floating Particles erstellen
             createParticles();
             
-            // Mouse Trail Variablen
-            const dots = [];
-            const mouse = { x: 0, y: 0 };
-            const dotCount = 12;
-
-            // Dot Klasse
-            class Dot {
-                constructor() {
-                    this.x = 0;
-                    this.y = 0;
-                    this.node = (function(){
-                        const n = document.createElement("div");
-                        n.className = "trail";
-                        document.body.appendChild(n);
-                        return n;
-                    }());
-                }
-                
-                draw() {
-                    this.node.style.left = this.x + "px";
-                    this.node.style.top = this.y + "px";
-                }
-            }
-
-            // Dots erstellen
-            for (let i = 0; i < dotCount; i++) {
-                const d = new Dot();
-                dots.push(d);
-            }
-
-            // Draw Funktion
-            function draw() {
-                let x = mouse.x;
-                let y = mouse.y;
-                
-                dots.forEach(function(dot, index, dots) {
-                    const nextDot = dots[index + 1] || dots[0];
-                    
-                    dot.x = x;
-                    dot.y = y;
-                    dot.draw();
-                    x += (nextDot.x - dot.x) * 0.6;
-                    y += (nextDot.y - dot.y) * 0.6;
-                });
-            }
-
-            // Mausbewegung verfolgen
-            document.addEventListener("mousemove", function(event) {
-                mouse.x = event.pageX;
-                mouse.y = event.pageY;
-            });
-
-            // Animation
-            function animate() {
-                draw();
-                requestAnimationFrame(animate);
-            }
-
-            // Nur starten wenn keine reduzierte Bewegung gewünscht
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                animate();
-            }
-
-            // Easter Egg Counter - Global für alle Benutzer
-            let hasDiscovered = localStorage.getItem('hasDiscoveredEasterEgg') === 'true';
+            const playButton = document.getElementById('playButton');
+            const audioPlayer = document.getElementById('audioPlayer');
             
-            // Counter anzeigen
-            const counterElement = document.getElementById('easterEggCounter');
-            const countElement = document.getElementById('discoverCount');
-            
-            // Counter von localStorage laden oder mit 0 starten
-            globalDiscoverCount = parseInt(localStorage.getItem('globalDiscoverCount')) || 0;
-            countElement.textContent = globalDiscoverCount;
-
-            // Tab-Navigation
-            const tabs = document.querySelectorAll('.nav-tab');
-            const ammoSection = document.getElementById('ammo-section');
-            const familySection = document.getElementById('family-section');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    tabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const tabName = this.getAttribute('data-tab');
-                    if (tabName === 'ammo') {
-                        ammoSection.style.display = 'block';
-                        familySection.style.display = 'none';
-                    } else if (tabName === 'family') {
-                        ammoSection.style.display = 'none';
-                        familySection.style.display = 'block';
-                    }
-                });
-            });
-            
-            // Lightbox Funktionen
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImage = document.getElementById('lightbox-image');
-            const lightboxClose = document.getElementById('lightbox-close');
-            
-            window.openLightbox = function(imageSrc) {
-                lightbox.style.display = 'flex';
-                lightboxImage.src = imageSrc;
-                document.body.style.overflow = 'hidden';
-            }
-            
-            lightboxClose.addEventListener('click', function() {
-                lightbox.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            });
-            
-            lightbox.addEventListener('click', function(e) {
-                if (e.target === lightbox) {
-                    lightbox.style.display = 'none';
-                    document.body.style.overflow = 'auto';
+            playButton.addEventListener('click', function() {
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    playButton.innerHTML = '<i class="fas fa-pause"></i> Ton pausieren';
+                    startImageAnimation();
+                } else {
+                    audioPlayer.pause();
+                    playButton.innerHTML = '<i class="fas fa-play"></i> Ton abspielen';
+                    stopImageAnimation();
                 }
             });
             
-            // Waffen Modal Funktionen
-            const weaponModal = document.getElementById('weaponModal');
-            const modalClose = document.getElementById('modalClose');
-            const modalWeaponIcon = document.getElementById('modalWeaponIcon');
-            const modalAmmoName = document.getElementById('modalAmmoName');
-            const modalPricePer = document.getElementById('modalPricePer');
-            const ammoSlider = document.getElementById('ammoSlider');
-            const quantityValue = document.getElementById('quantityValue');
-            const totalCost = document.getElementById('totalCost');
-            const totalPrice = document.getElementById('totalPrice');
-            
-            let currentPrice = 0;
-            
-            // Munitionskarten klickbar machen
-            const ammoCards = document.querySelectorAll('.ammo-card');
-            ammoCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const ammoType = this.getAttribute('data-ammo-type');
-                    currentPrice = parseInt(this.getAttribute('data-price'));
-                    const ammoName = this.querySelector('.ammo-name').textContent;
-                    const weaponIcon = this.querySelector('.weapon-icon').src;
-                    
-                    // Modal mit Daten füllen
-                    modalWeaponIcon.src = weaponIcon;
-                    modalAmmoName.textContent = ammoName;
-                    modalPricePer.textContent = formatPrice(currentPrice);
-                    
-                    // Slider zurücksetzen
-                    ammoSlider.value = 1;
-                    quantityValue.textContent = 1;
-                    updateTotalPrice();
-                    
-                    // Modal anzeigen
-                    weaponModal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                });
+            // Wenn die Audio-Datei zu Ende gespielt wurde
+            audioPlayer.addEventListener('ended', function() {
+                playButton.innerHTML = '<i class="fas fa-play"></i> Ton abspielen';
+                stopImageAnimation();
             });
             
-            // Slider Event
-            ammoSlider.addEventListener('input', function() {
-                quantityValue.textContent = this.value;
-                updateTotalPrice();
-            });
-            
-            // Gesamtpreis berechnen
-            function updateTotalPrice() {
-                const quantity = parseInt(ammoSlider.value);
-                const total = currentPrice * quantity;
-                totalCost.textContent = formatPrice(total);
-                
-                // Animationseffekt
-                totalPrice.classList.add('highlight');
-                setTimeout(() => {
-                    totalPrice.classList.remove('highlight');
-                }, 300);
-            }
-            
-            // Preis formatieren (Tausenderpunkte)
-            function formatPrice(price) {
-                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
-            
-            // Modal schließen
-            modalClose.addEventListener('click', function() {
-                weaponModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            });
-            
-            weaponModal.addEventListener('click', function(e) {
-                if (e.target === weaponModal) {
-                    weaponModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            });
-            
-            // Video Easter Egg Funktionen - FIXED
-            const videoButton = document.getElementById('videoButton');
-            const videoModal = document.getElementById('videoModal');
-            const videoPlayer = document.getElementById('videoPlayer');
-            const videoClose = document.getElementById('videoClose');
-            
-            let hideCounterTimeout = null;
-            
-            videoButton.addEventListener('click', async function() {
-                // Counter erhöhen wenn dieser Benutzer noch nicht entdeckt hat
-                if (!hasDiscovered) {
-                    globalDiscoverCount = await updateGlobalCounter();
-                    localStorage.setItem('hasDiscoveredEasterEgg', 'true');
-                    hasDiscovered = true;
-                    countElement.textContent = globalDiscoverCount;
-                }
-                
-                // Counter anzeigen für 5 Sekunden
-                counterElement.style.display = 'block';
-                
-                if (hideCounterTimeout) {
-                    clearTimeout(hideCounterTimeout);
-                }
-                hideCounterTimeout = setTimeout(() => {
-                    counterElement.style.display = 'none';
-                }, 5000);
-                
-                // FIX: Korrekter YouTube Embed Link
-                videoPlayer.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
-                videoModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            });
-            
-            // Counter anzeigen beim Überfahren
-            videoButton.addEventListener('mouseenter', function() {
-                counterElement.style.display = 'block';
-                
-                if (hideCounterTimeout) {
-                    clearTimeout(hideCounterTimeout);
-                }
-            });
-            
-            videoButton.addEventListener('mouseleave', function() {
-                // Nach 5 Sekunden ausblenden
-                hideCounterTimeout = setTimeout(() => {
-                    counterElement.style.display = 'none';
-                }, 5000);
-            });
-            
-            videoClose.addEventListener('click', function() {
-                videoModal.style.display = 'none';
-                videoPlayer.src = "";
-                document.body.style.overflow = 'auto';
-            });
-            
-            videoModal.addEventListener('click', function(e) {
-                if (e.target === videoModal) {
-                    videoModal.style.display = 'none';
-                    videoPlayer.src = "";
-                    document.body.style.overflow = 'auto';
-                }
-            });
-            
-            // Sanfte Hover-Effekte für Karten
-            const cards = document.querySelectorAll('.ammo-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-15px) scale(1.03)';
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0) scale(1)';
-                });
+            // Fehlerbehandlung für Audio
+            audioPlayer.addEventListener('error', function() {
+                playButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ton nicht verfügbar';
+                playButton.disabled = true;
+                playButton.style.background = '#666';
+                playButton.style.cursor = 'not-allowed';
             });
         });
     </script>
